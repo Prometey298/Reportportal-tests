@@ -8,33 +8,58 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
+/**
+ * Негативный API тест, проверяющий, что дашборд не может быть создан без обязательного поля "name".
+ *
+ * Тест выполняет:
+ * - POST запрос с некорректным телом (без "name");
+ * - проверку, что API возвращает статус 400 и ожидаемое сообщение об ошибке;
+ * - GET-запрос, подтверждающий, что дашборд не был создан.
+ *
+ * Используется:
+ * - RestAssured для HTTP-запросов;
+ * - Allure для отчётности;
+ * - JUnit 5 для структуры тестов.
+ */
 @Epic("Report Portal API Tests")
 @Feature("Dashboard Management")
 public class NegativeDashboardAPITest {
 
     private static final String BASE_URL = "https://demo.reportportal.io/api/v1";
+
+    // ⚠️ Актуальный API токен (убедись, что создан в проекте default_personal)
     private static final String API_TOKEN = "vkfkvkofobdf_Du3wsQAESe250_qldzZ28oHz5e1D82qsntEJefZqmREssRvn612SYTv4x0x2-XTX";
+
     private static final String PROJECT_NAME = "default_personal";
 
+    /**
+     * Установка базового URL до всех тестов.
+     */
     @BeforeAll
     public static void setup() {
         RestAssured.baseURI = BASE_URL;
     }
 
+    /**
+     * Негативный тест: попытка создать дашборд без поля "name".
+     * Ожидаем статус 400 и сообщение об ошибке.
+     */
     @Test
     @Story("Create Dashboard with Invalid Data")
     @DisplayName("Create dashboard without required 'name' parameter")
     void testCreateDashboardWithoutName() {
+        // JSON тело без поля "name"
         String invalidRequestBody = """
         {
             "description": "Negative Test Dashboard"
         }
         """;
 
-        // POST запрос с логированием
+        // === Шаг 1: Отправка POST-запроса ===
         given()
                 .auth().oauth2(API_TOKEN)
                 .contentType(ContentType.JSON)
@@ -44,20 +69,20 @@ public class NegativeDashboardAPITest {
                 .when()
                 .post("/{projectName}/dashboard")
                 .then()
-                .log().status()    // Логирование статуса
-                .log().body()      // Логирование тела ответа
-                .statusCode(400)
-                .body("message", containsString("Field 'name' should not be null"));
+                .log().status()  // лог статуса
+                .log().body()    // лог тела ответа
+                .statusCode(400) // ожидаем ошибку 400 Bad Request
+                .body("message", containsString("Field 'name' should not be null")); // проверка сообщения
 
-        // GET проверка с логированием
+        // === Шаг 2: Убедимся, что дашборд не создался ===
         given()
                 .auth().oauth2(API_TOKEN)
                 .pathParam("projectName", PROJECT_NAME)
                 .when()
                 .get("/{projectName}/dashboard")
                 .then()
-                .log().status()    // Логирование статуса
+                .log().status()
                 .statusCode(200)
-                .body("content.description", not(hasItem("Negative Test Dashboard")));
+                .body("content.description", not(hasItem("Negative Test Dashboard"))); // убеждаемся, что нет такого описания
     }
 }
