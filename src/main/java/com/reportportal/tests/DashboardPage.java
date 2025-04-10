@@ -8,32 +8,22 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-/**
- * Класс-страница для взаимодействия с разделом Dashboard в Report Portal.
- * Реализует основные действия: открытие меню, создание нового Dashboard,
- * проверка его появления на странице.
- *
- * Реализован по паттерну Page Object.
- */
 public class DashboardPage {
     private WebDriver driver;
     private WebDriverWait wait;
 
     // Локаторы для элементов страницы
-    private By addDashboardBtn     = By.xpath("//button[contains(., 'Add New Dashboard')]");
-    private By dashboardNameInput  = By.cssSelector("input[placeholder='Enter dashboard name']");
-    private By dashboardDescInput  = By.cssSelector("textarea[placeholder='Enter dashboard description']");
-    private By addButton           = By.xpath("//button[text()='Add']");
+    private By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
+    private By addWidgetBtn = By.xpath("//span[contains(text(),'Add new widget')]");
+    private By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
+    private By nextStepBtn = By.xpath("//span[contains(text(),'Next Step')]");
+    private By taskProgressFilter = By.xpath("//div[contains(text(),'Task Progress')]");
+    private By addWidgetFinalBtn = By.xpath("//span[contains(text(),'Add')]");
+    private By widgetContainer = By.cssSelector(".widgetView__widget-container");
 
-    /**
-     * Конструктор страницы Dashboard.
-     * Инициализирует драйвер и явное ожидание.
-     *
-     * @param driver WebDriver, передаваемый из теста
-     */
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     /**
@@ -46,39 +36,51 @@ public class DashboardPage {
     }
 
     /**
-     * Нажимает кнопку "Add New Dashboard".
+     * Открывает первый дашборд из списка
      */
-    public void clickAddDashboard() {
-        wait.until(ExpectedConditions.elementToBeClickable(addDashboardBtn)).click();
+    public void openFirstDashboard() {
+        wait.until(ExpectedConditions.elementToBeClickable(firstDashboardLink)).click();
     }
 
     /**
-     * Заполняет поля "name" и "description" нового Dashboard.
-     *
-     * @param name имя дашборда
-     * @param desc описание дашборда
+     * Нажимает кнопку добавления нового виджета
      */
-    public void fillDashboardFields(String name, String desc) {
-        WebElement nameElem = wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardNameInput));
-        nameElem.sendKeys(name); // Вводим имя дашборда
-        driver.findElement(dashboardDescInput).sendKeys(desc); // Вводим описание
+    public void clickAddNewWidget() {
+        wait.until(ExpectedConditions.elementToBeClickable(addWidgetBtn)).click();
     }
 
     /**
-     * Подтверждает создание Dashboard, нажимая кнопку "Add".
+     * Выбирает тип виджета "Launch statistics chart"
      */
-    public void submit() {
-        driver.findElement(addButton).click();
+    public void selectWidgetType() {
+        wait.until(ExpectedConditions.elementToBeClickable(widgetTypeSelector)).click();
     }
 
     /**
-     * Проверяет, отображается ли дашборд с указанным именем на странице.
-     *
-     * @param name имя дашборда для поиска
-     * @return true, если дашборд найден, иначе false
+     * Нажимает кнопку "Next Step"
      */
-    public boolean dashboardExists(String name) {
-        By nameLocator = By.xpath("//span[contains(text(), '" + name + "')]");
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(nameLocator)).isDisplayed();
+    public void clickNextStep() {
+        wait.until(ExpectedConditions.elementToBeClickable(nextStepBtn)).click();
+    }
+
+    /**
+     * Выбирает фильтр "Task Progress"
+     */
+    public void selectTaskProgressFilter() {
+        wait.until(ExpectedConditions.elementToBeClickable(taskProgressFilter)).click();
+    }
+
+    /**
+     * Завершает добавление виджета
+     */
+    public void completeWidgetAdding() {
+        wait.until(ExpectedConditions.elementToBeClickable(addWidgetFinalBtn)).click();
+    }
+
+    /**
+     * Проверяет наличие виджета на странице
+     */
+    public boolean isWidgetPresent() {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(widgetContainer)).isDisplayed();
     }
 }
