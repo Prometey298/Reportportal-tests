@@ -43,6 +43,7 @@ public class WidgetCreationTest {
             dashboardPage.clickNextStep();
             dashboardPage.selectTaskProgressFilter();
             dashboardPage.clickNextStep();
+            dashboardPage.getWidgetName();
             dashboardPage.completeWidgetAdding();
 
             // 4. Проверка наличия виджета

@@ -18,6 +18,7 @@ public class DashboardPage {
     private By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
     private By nextStepBtn = By.xpath("//span[contains(text(),'Next step')]");
     private By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
+    By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
     private By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
     private By widgetContainer = By.cssSelector(".widgetView__widget-container");
 
@@ -83,6 +84,20 @@ public class DashboardPage {
     public void selectTaskProgressFilter() {
         wait.until(ExpectedConditions.elementToBeClickable(taskProgressFilter)).click();
     }
+
+    /**
+     * Извлекает сгенерированное название виджета из поля "Widget name".
+     *
+     * @return значение атрибута value в <input> (например, "Task Progress_224")
+     */
+    public String getWidgetName() {
+        WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(widgetNameInput));
+
+        // Берём текст не через getText(), а через getAttribute("value")
+        // потому что это <input>, и Selenium хранит значение поля в value.
+        return nameInput.getAttribute("value");
+    }
+
 
     /**
      * Завершает добавление виджета
