@@ -16,9 +16,9 @@ public class DashboardPage {
     private By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
     private By addWidgetBtn = By.xpath("//span[contains(text(),'Add new widget')]");
     private By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
-    private By nextStepBtn = By.xpath("//span[contains(text(),'Next Step')]");
-    private By taskProgressFilter = By.xpath("//div[contains(text(),'Task Progress')]");
-    private By addWidgetFinalBtn = By.xpath("//span[contains(text(),'Add')]");
+    private By nextStepBtn = By.xpath("//span[contains(text(),'Next step')]");
+    private By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
+    private By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
     private By widgetContainer = By.cssSelector(".widgetView__widget-container");
 
     public DashboardPage(WebDriver driver) {
@@ -60,8 +60,22 @@ public class DashboardPage {
      * Нажимает кнопку "Next Step"
      */
     public void clickNextStep() {
-        wait.until(ExpectedConditions.elementToBeClickable(nextStepBtn)).click();
+        WebElement nextStep = wait.until(ExpectedConditions.elementToBeClickable(nextStepBtn));
+
+        // Скролл к кнопке
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextStep);
+
+        // Пауза, чтобы перекрывающий элемент успел исчезнуть (иногда требуется)
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
+        // Клик через JavaScript
+        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", nextStep);
     }
+
 
     /**
      * Выбирает фильтр "Task Progress"
