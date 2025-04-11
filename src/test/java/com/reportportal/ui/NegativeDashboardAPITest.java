@@ -1,5 +1,6 @@
 package com.reportportal.ui;
 
+import com.reportportal.tests.utils.ConfigLoader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -29,10 +30,11 @@ import static org.hamcrest.Matchers.*;
 @Feature("Dashboard Management")
 public class NegativeDashboardAPITest {
 
-    private static final String BASE_URL = "https://demo.reportportal.io/api/v1";
+    // Базовый URL API
+    private static final String BASE_URL = ConfigLoader.getProperty("api.base.url");
 
-    // ⚠️ Актуальный API токен (убедись, что создан в проекте default_personal)
-    private static final String API_TOKEN = "iluyjyyjt_0pQUqduNReywXVf80_0uUx52Hwr9aDrxd-_LTF7QzU9lLlSRKTqV5Wx57D0WzrCp";
+    // 🔑 API токен, полученный из профиля проекта (должен быть актуальным!)
+    private static final String API_TOKEN = ConfigLoader.getProperty("api.token");
 
     private static final String PROJECT_NAME = "default_personal";
 

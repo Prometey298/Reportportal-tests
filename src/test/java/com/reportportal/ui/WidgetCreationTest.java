@@ -2,6 +2,7 @@ package com.reportportal.ui;
 
 import com.reportportal.tests.DashboardPage;
 import com.reportportal.tests.LoginPage;
+import com.reportportal.tests.utils.ConfigLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,9 @@ public class WidgetCreationTest {
 
     @Test
     public void testAddWidgetToDashboard() {
-        System.setProperty("webdriver.chrome.driver", "D:\\Users\\Dima\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe");
+        // Загружаем настройки
+        String username = ConfigLoader.getProperty("default.username");
+        String password = ConfigLoader.getProperty("default.password");
 
         ChromeOptions options = new ChromeOptions();
         Map<String, Object> prefs = new HashMap<>();
@@ -29,8 +32,8 @@ public class WidgetCreationTest {
         try {
             // 1. Авторизация
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.open();
-            loginPage.loginAs("default", "1q2w3e");
+            loginPage.open(ConfigLoader.getProperty("reportportal.url"));
+            loginPage.loginAs(username, password);
 
             // 2. Открытие первого дашборда
             DashboardPage dashboardPage = new DashboardPage(driver);

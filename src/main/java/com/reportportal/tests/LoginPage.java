@@ -33,8 +33,8 @@ public class LoginPage {
     /**
      * Открывает стартовую страницу Report Portal.
      */
-    public void open() {
-        driver.get("https://demo.reportportal.io");
+    public void open(String url) {
+        driver.get(url);
     }
 
     /**
