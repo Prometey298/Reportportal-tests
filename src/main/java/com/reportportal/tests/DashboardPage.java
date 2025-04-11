@@ -20,7 +20,6 @@ public class DashboardPage {
     private By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
     private By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
     private By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
-    private By widgetContainer = By.cssSelector(".widgetView__widget-container");
 
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
