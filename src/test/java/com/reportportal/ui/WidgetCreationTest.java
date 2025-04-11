@@ -3,19 +3,24 @@ package com.reportportal.ui;
 import com.reportportal.tests.DashboardPage;
 import com.reportportal.tests.LoginPage;
 import com.reportportal.tests.utils.ConfigLoader;
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WidgetCreationTest {
 
     @Test
-    public void testAddWidgetToDashboard() {
+    public void testAddWidgetToDashboard() throws IOException {
         // Загружаем настройки
         String username = ConfigLoader.getProperty("default.username");
         String password = ConfigLoader.getProperty("default.password");
@@ -52,6 +57,10 @@ public class WidgetCreationTest {
             // 4. Проверка наличия виджета
             boolean isWidgetAdded = dashboardPage.isWidgetPresent(widgetName);
             Assertions.assertTrue(isWidgetAdded, "Виджет не был добавлен");
+        } catch (Exception e) {
+            File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(screenshot, new File("target/screenshots/error.png"));
+            throw e;
         } finally {
             driver.quit();
         }
