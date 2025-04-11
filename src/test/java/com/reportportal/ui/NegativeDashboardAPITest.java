@@ -36,7 +36,7 @@ public class NegativeDashboardAPITest {
     // 🔑 API токен, полученный из профиля проекта (должен быть актуальным!)
     private static final String API_TOKEN = ConfigLoader.getProperty("api.token");
 
-    private static final String PROJECT_NAME = "default_personal";
+    private static final String PROJECT_NAME = ConfigLoader.getProperty("project.name");
 
     /**
      * Установка базового URL до всех тестов.

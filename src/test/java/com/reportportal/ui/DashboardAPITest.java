@@ -34,7 +34,7 @@ public class DashboardAPITest {
     private static final String API_TOKEN = ConfigLoader.getProperty("api.token");
 
     // Имя проекта, в котором создаётся Dashboard
-    private static final String PROJECT_NAME = "default_personal";
+    private static final String PROJECT_NAME = ConfigLoader.getProperty("project.name");
 
     /**
      * Устанавливает базовый URL до выполнения всех тестов.
