@@ -9,17 +9,17 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class DashboardPage {
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
     // Локаторы для элементов страницы
-    private By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
-    private By addWidgetBtn = By.xpath("//span[contains(text(),'Add new widget')]");
-    private By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
-    private By nextStepBtn = By.xpath("//span[contains(text(),'Next step')]");
-    private By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
-    private By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
-    private By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
+    private final By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
+    private final By addWidgetBtn = By.xpath("//span[contains(text(),'Add new widget')]");
+    private final By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
+    private final By nextStepBtn = By.xpath("//span[contains(text(),'Next step')]");
+    private final By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
+    private final By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
+    private final By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
 
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
