@@ -1,16 +1,13 @@
 package com.reportportal.tests;
 
+import com.reportportal.tests.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import org.openqa.selenium.JavascriptExecutor;
 
 public class DashboardPage {
     private final WebDriver driver;
-    private final WebDriverWait wait;
 
     // Локаторы для элементов страницы
     private final By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
@@ -23,15 +20,15 @@ public class DashboardPage {
 
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
     }
 
     /**
      * Открывает раздел "Dashboards" через боковое меню.
      */
     public void openDashboardsMenu() {
-        WebElement dashboardsIcon = wait.until(ExpectedConditions.elementToBeClickable(
-                By.cssSelector("a[href*='dashboard']"))); // Иконка "Dashboards"
+        By dashboardMenuLocator = By.cssSelector("a[href*='dashboard']");
+        WaitUtils.waitUntilClickable(driver, dashboardMenuLocator, 15);
+        WebElement dashboardsIcon = driver.findElement(dashboardMenuLocator);
         dashboardsIcon.click();
     }
 
@@ -39,70 +36,69 @@ public class DashboardPage {
      * Открывает первый дашборд из списка
      */
     public void openFirstDashboard() {
-        wait.until(ExpectedConditions.elementToBeClickable(firstDashboardLink)).click();
+        WaitUtils.waitUntilClickable(driver, firstDashboardLink, 15);
+        driver.findElement(firstDashboardLink).click();
     }
 
     /**
      * Нажимает кнопку добавления нового виджета
      */
     public void clickAddNewWidget() {
-        wait.until(ExpectedConditions.elementToBeClickable(addWidgetBtn)).click();
+        WaitUtils.waitUntilClickable(driver, addWidgetBtn, 15);
+        driver.findElement(addWidgetBtn).click();
     }
 
     /**
      * Выбирает тип виджета "Launch statistics chart"
      */
     public void selectWidgetType() {
-        wait.until(ExpectedConditions.elementToBeClickable(widgetTypeSelector)).click();
+        WaitUtils.waitUntilClickable(driver, widgetTypeSelector, 15);
+        driver.findElement(widgetTypeSelector).click();
     }
 
     /**
      * Нажимает кнопку "Next Step"
      */
     public void clickNextStep() {
-        WebElement nextStep = wait.until(ExpectedConditions.elementToBeClickable(nextStepBtn));
+        WaitUtils.waitUntilClickable(driver, nextStepBtn, 15);
+        WebElement nextStep = driver.findElement(nextStepBtn);
 
-        // Скролл к кнопке
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextStep);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextStep);
 
-        // Пауза, чтобы перекрывающий элемент успел исчезнуть (иногда требуется)
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
 
-        // Клик через JavaScript
-        ((org.openqa.selenium.JavascriptExecutor) driver).executeScript("arguments[0].click();", nextStep);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextStep);
     }
-
 
     /**
      * Выбирает фильтр "Task Progress"
      */
     public void selectTaskProgressFilter() {
-        wait.until(ExpectedConditions.elementToBeClickable(taskProgressFilter)).click();
+        WaitUtils.waitUntilClickable(driver, taskProgressFilter, 15);
+        driver.findElement(taskProgressFilter).click();
     }
 
     /**
      * Извлекает сгенерированное название виджета из поля "Widget name".
      *
-     * @return значение атрибута value в <input> (например, "Task Progress_224")
+     * @return значение атрибута value в <input>
      */
     public String getWidgetName() {
-        WebElement nameInput = wait.until(ExpectedConditions.visibilityOfElementLocated(widgetNameInput));
-
-        // Берём текст не через getText(), а через getAttribute("value")
-        // потому что это <input>, и Selenium хранит значение поля в value.
+        WaitUtils.waitUntilVisible(driver, widgetNameInput, 15);
+        WebElement nameInput = driver.findElement(widgetNameInput);
         return nameInput.getAttribute("value");
     }
-
 
     /**
      * Завершает добавление виджета
      */
     public void completeWidgetAdding() {
-        wait.until(ExpectedConditions.elementToBeClickable(addWidgetFinalBtn)).click();
+        WaitUtils.waitUntilClickable(driver, addWidgetFinalBtn, 15);
+        driver.findElement(addWidgetFinalBtn).click();
     }
 
     /**
@@ -114,11 +110,11 @@ public class DashboardPage {
     public boolean isWidgetPresent(String widgetName) {
         By widgetByName = By.xpath("//div[contains(text(),'" + widgetName + "')]");
         try {
-            WebElement widget = wait.until(ExpectedConditions.visibilityOfElementLocated(widgetByName));
+            WaitUtils.waitUntilVisible(driver, widgetByName, 15);
+            WebElement widget = driver.findElement(widgetByName);
             return widget.isDisplayed();
         } catch (Exception e) {
             return false;
         }
     }
-
 }

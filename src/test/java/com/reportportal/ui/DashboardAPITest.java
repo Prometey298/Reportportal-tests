@@ -29,7 +29,7 @@ public class DashboardAPITest {
     private static final String BASE_URL = "https://demo.reportportal.io/api/v1";
 
     // 🔑 API токен, полученный из профиля проекта (должен быть актуальным!)
-    private static final String API_TOKEN = "vkfkvkofobdf_Du3wsQAESe250_qldzZ28oHz5e1D82qsntEJefZqmREssRvn612SYTv4x0x2-XTX";
+    private static final String API_TOKEN = "iluyjyyjt_0pQUqduNReywXVf80_0uUx52Hwr9aDrxd-_LTF7QzU9lLlSRKTqV5Wx57D0WzrCp";
 
     // Имя проекта, в котором создаётся Dashboard
     private static final String PROJECT_NAME = "default_personal";

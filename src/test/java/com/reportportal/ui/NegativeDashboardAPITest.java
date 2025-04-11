@@ -32,7 +32,7 @@ public class NegativeDashboardAPITest {
     private static final String BASE_URL = "https://demo.reportportal.io/api/v1";
 
     // ⚠️ Актуальный API токен (убедись, что создан в проекте default_personal)
-    private static final String API_TOKEN = "vkfkvkofobdf_Du3wsQAESe250_qldzZ28oHz5e1D82qsntEJefZqmREssRvn612SYTv4x0x2-XTX";
+    private static final String API_TOKEN = "iluyjyyjt_0pQUqduNReywXVf80_0uUx52Hwr9aDrxd-_LTF7QzU9lLlSRKTqV5Wx57D0WzrCp";
 
     private static final String PROJECT_NAME = "default_personal";
 
