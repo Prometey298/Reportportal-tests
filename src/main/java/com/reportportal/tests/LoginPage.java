@@ -14,12 +14,12 @@ import org.openqa.selenium.WebElement;
 public class LoginPage {
 
     // Экземпляр WebDriver, через который будет производиться взаимодействие с браузером
-    private WebDriver driver;
+    private final WebDriver driver;
 
     // Локаторы для элементов на странице входа
-    private By usernameField = By.name("login");
-    private By passwordField = By.name("password");
-    private By loginButton   = By.cssSelector("button[type='submit']");
+    private final By usernameField = By.name("login");
+    private final By passwordField = By.name("password");
+    private final By loginButton   = By.cssSelector("button[type='submit']");
 
     /**
      * Конструктор страницы логина.
