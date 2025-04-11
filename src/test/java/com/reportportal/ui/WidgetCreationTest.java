@@ -43,13 +43,12 @@ public class WidgetCreationTest {
             dashboardPage.clickNextStep();
             dashboardPage.selectTaskProgressFilter();
             dashboardPage.clickNextStep();
-            dashboardPage.getWidgetName();
+            String widgetName = dashboardPage.getWidgetName();
             dashboardPage.completeWidgetAdding();
 
             // 4. Проверка наличия виджета
-            boolean isWidgetAdded = dashboardPage.isWidgetPresent();
+            boolean isWidgetAdded = dashboardPage.isWidgetPresent(widgetName);
             Assertions.assertTrue(isWidgetAdded, "Виджет не был добавлен");
-
         } finally {
             driver.quit();
         }

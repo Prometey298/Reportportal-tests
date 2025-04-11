@@ -18,7 +18,7 @@ public class DashboardPage {
     private By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
     private By nextStepBtn = By.xpath("//span[contains(text(),'Next step')]");
     private By taskProgressFilter = By.xpath("//span[contains(text(),'Task Progress')]");
-    By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
+    private By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
     private By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
     private By widgetContainer = By.cssSelector(".widgetView__widget-container");
 
@@ -107,9 +107,19 @@ public class DashboardPage {
     }
 
     /**
-     * Проверяет наличие виджета на странице
+     * Проверяет наличие виджета с конкретным названием на странице
+     *
+     * @param widgetName имя виджета, которое должно быть на странице
+     * @return true, если виджет с таким именем найден
      */
-    public boolean isWidgetPresent() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(widgetContainer)).isDisplayed();
+    public boolean isWidgetPresent(String widgetName) {
+        By widgetByName = By.xpath("//div[contains(text(),'" + widgetName + "')]");
+        try {
+            WebElement widget = wait.until(ExpectedConditions.visibilityOfElementLocated(widgetByName));
+            return widget.isDisplayed();
+        } catch (Exception e) {
+            return false;
+        }
     }
+
 }
