@@ -80,6 +80,13 @@ public class DashboardPage {
     public void selectTaskProgressFilter() {
         WaitUtils.waitUntilClickable(driver, taskProgressFilter, 15);
         driver.findElement(taskProgressFilter).click();
+
+        // Прокручиваем к кнопке Next Step (даже если она еще не видна)
+        WebElement nextStep = driver.findElement(nextStepBtn);
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                nextStep
+        );
     }
 
     /**
