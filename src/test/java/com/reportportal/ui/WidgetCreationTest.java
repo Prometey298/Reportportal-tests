@@ -8,44 +8,31 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class WidgetCreationTest {
+public class WidgetCreationTest extends BaseTest {
 
     @Test
     public void testAddWidgetToDashboard() throws IOException {
-        // Загружаем настройки
+        // Load settings
         String username = ConfigLoader.getProperty("default.username");
         String password = ConfigLoader.getProperty("default.password");
-
-        ChromeOptions options = new ChromeOptions();
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        options.addArguments("--incognito");
-
-        WebDriver driver = new ChromeDriver(options);
+        String reportPortalUrl = ConfigLoader.getProperty("reportportal.url");
 
         try {
-            // 1. Авторизация
+            // 1. Authorization
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.open(ConfigLoader.getProperty("reportportal.url"));
+            loginPage.open(reportPortalUrl);
             loginPage.loginAs(username, password);
 
-            // 2. Открытие первого дашборда
+            // 2. Open first dashboard
             DashboardPage dashboardPage = new DashboardPage(driver);
             dashboardPage.openDashboardsMenu();
             dashboardPage.openFirstDashboard();
 
-            // 3. Добавление нового виджета
+            // 3. Add new widget
             dashboardPage.clickAddNewWidget();
             dashboardPage.selectWidgetType();
             dashboardPage.clickNextStep();
@@ -54,15 +41,14 @@ public class WidgetCreationTest {
             String widgetName = dashboardPage.getWidgetName();
             dashboardPage.completeWidgetAdding();
 
-            // 4. Проверка наличия виджета
+            // 4. Verify widget is added
             boolean isWidgetAdded = dashboardPage.isWidgetPresent(widgetName);
-            Assertions.assertTrue(isWidgetAdded, "Виджет не был добавлен");
+            Assertions.assertTrue(isWidgetAdded, "Widget was not added");
         } catch (Exception e) {
+            // Take screenshot on failure
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshot, new File("target/screenshots/error.png"));
             throw e;
-        } finally {
-            driver.quit();
         }
     }
 }

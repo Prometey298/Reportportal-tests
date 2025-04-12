@@ -44,6 +44,7 @@ public class LoginPage {
      */
     public void enterUsername(String username) {
         WebElement userInput = driver.findElement(usernameField);
+        userInput.click(); // Явный фокус
         userInput.clear();               // очищаем поле перед вводом
         userInput.sendKeys(username);   // вводим логин
     }
