@@ -1,4 +1,4 @@
-package com.reportportal.tests.utils;
+package com.reportportal.utils;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

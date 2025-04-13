@@ -1,4 +1,4 @@
-package com.reportportal.tests.utils;
+package com.reportportal.utils;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;

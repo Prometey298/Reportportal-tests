@@ -1,6 +1,6 @@
-package com.reportportal.ui;
+package com.reportportal.api;
 
-import com.reportportal.tests.utils.ConfigLoader;
+import com.reportportal.utils.ConfigLoader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;

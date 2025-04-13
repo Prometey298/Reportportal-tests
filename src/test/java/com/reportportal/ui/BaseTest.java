@@ -1,7 +1,7 @@
 package com.reportportal.ui;
 
-import com.reportportal.tests.utils.ConfigLoader;
-import com.reportportal.tests.utils.WebDriverFactory;
+import com.reportportal.utils.ConfigLoader;
+import com.reportportal.utils.WebDriverFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

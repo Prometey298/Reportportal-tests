@@ -1,6 +1,6 @@
-package com.reportportal.tests;
+package com.reportportal.pages;
 
-import com.reportportal.tests.utils.WaitUtils;
+import com.reportportal.utils.WaitUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

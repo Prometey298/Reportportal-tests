@@ -1,4 +1,4 @@
-package com.reportportal.tests.utils;
+package com.reportportal.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

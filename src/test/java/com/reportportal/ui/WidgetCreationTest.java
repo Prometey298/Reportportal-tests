@@ -1,8 +1,8 @@
 package com.reportportal.ui;
 
-import com.reportportal.tests.DashboardPage;
-import com.reportportal.tests.LoginPage;
-import com.reportportal.tests.utils.ConfigLoader;
+import com.reportportal.pages.DashboardPage;
+import com.reportportal.pages.LoginPage;
+import com.reportportal.utils.ConfigLoader;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
