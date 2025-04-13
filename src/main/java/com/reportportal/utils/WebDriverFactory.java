@@ -44,7 +44,7 @@ public class WebDriverFactory {
 
         // Устанавливаем ChromeDriver для Yandex Browser с указанием нужной версии
         WebDriverManager.chromedriver()
-                .driverVersion("132.0.6834.83")
+                .driverVersion(ConfigLoader.getProperty("yandex.browser.version"))
                 .setup();
 
         ChromeOptions options = getCommonChromeOptions();
