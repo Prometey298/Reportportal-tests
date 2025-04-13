@@ -25,14 +25,26 @@ public class WebDriverFactory {
     }
 
     private static WebDriver createYandexDriver() {
-        String yandexPath = ConfigLoader.getProperty("yandex.browser.path");
-        if (yandexPath == null || yandexPath.isEmpty()) {
-            throw new RuntimeException("Path to Yandex Browser is not specified in config.properties");
+        // Определяем операционную систему
+        String os = System.getProperty("os.name").toLowerCase();
+        String yandexPath;
+        if (os.contains("win")) {
+            yandexPath = ConfigLoader.getProperty("yandex.browser.path.windows");
+        } else if (os.contains("mac")) {
+            yandexPath = ConfigLoader.getProperty("yandex.browser.path.mac");
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            yandexPath = ConfigLoader.getProperty("yandex.browser.path.linux");
+        } else {
+            throw new RuntimeException("Unsupported operating system: " + os);
         }
 
-        // Set up ChromeDriver for Yandex Browser
+        if (yandexPath == null || yandexPath.isEmpty()) {
+            throw new RuntimeException("Path to Yandex Browser is not specified for OS: " + os);
+        }
+
+        // Устанавливаем ChromeDriver для Yandex Browser с указанием нужной версии
         WebDriverManager.chromedriver()
-                .driverVersion("132.0.6834.83")  // ← Явно указываем версию
+                .driverVersion("132.0.6834.83")
                 .setup();
 
         ChromeOptions options = getCommonChromeOptions();

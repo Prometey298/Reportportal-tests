@@ -20,7 +20,8 @@ public class BaseUITest {
 
         // Check browser path if Yandex is used
         if ("yandex".equalsIgnoreCase(browser)) {
-            String yandexPath = ConfigLoader.getProperty("yandex.browser.path");
+            // Получаем путь для Yandex Browser в зависимости от ОС
+            String yandexPath = getYandexBrowserPath();
             Assertions.assertTrue(
                     new File(yandexPath).exists(),
                     "Yandex Browser not found at specified path: " + yandexPath
@@ -37,6 +38,32 @@ public class BaseUITest {
                 System.err.println("Error during driver quit: " + e.getMessage());
             }
         }
+    }
 
+    // Новый метод для получения пути к Yandex Browser в зависимости от ОС
+    private String getYandexBrowserPath() {
+        String os = System.getProperty("os.name").toLowerCase();
+        String key = "yandex.browser.path";
+
+        // Если ОС Windows, получаем путь для Windows
+        if (os.contains("win")) {
+            key += ".windows";
+        }
+        // Если ОС Mac, получаем путь для MacOS
+        else if (os.contains("mac")) {
+            key += ".mac";
+        }
+        // Для Linux и других систем
+        else if (os.contains("nux") || os.contains("nix") || os.contains("aix")) {
+            key += ".linux";
+        }
+
+        // Получаем путь по новому ключу
+        String path = ConfigLoader.getProperty(key);
+        if (path == null || path.isEmpty()) {
+            throw new RuntimeException("Yandex Browser path not found for OS: " + os);
+        }
+
+        return path;
     }
 }
