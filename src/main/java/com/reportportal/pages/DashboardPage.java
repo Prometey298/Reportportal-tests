@@ -60,17 +60,17 @@ public class DashboardPage {
      * Нажимает кнопку "Next Step"
      */
     public void clickNextStep() {
+        // Первоначальное ожидание, чтобы кнопка была кликабельна
         WaitUtils.waitUntilClickable(driver, nextStepBtn, 15);
         WebElement nextStep = driver.findElement(nextStepBtn);
 
+        // Прокручиваем элемент в область видимости
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextStep);
 
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+        // Явное ожидание — ждём, пока кнопка снова станет кликабельной после прокрутки
+        WaitUtils.waitUntilClickable(driver, nextStepBtn, 15);
 
+        // Выполняем клик через JavaScript
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextStep);
     }
 
