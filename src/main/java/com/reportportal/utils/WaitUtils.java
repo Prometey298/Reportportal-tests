@@ -8,37 +8,38 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 /**
- * Утилитный класс для работы с ожиданиями (explicit waits) в Selenium.
- *
- * Содержит обёртки над WebDriverWait для:
- * - ожидания появления элемента на странице;
- * - ожидания кликабельности элемента.
- *
- * Позволяет сократить дублирование кода в Page Object и тестах.
+ * Утилитный класс для работы с ожиданиями в Selenium WebDriver.
+ * Предоставляет статические методы-обертки над WebDriverWait для стандартных сценариев ожидания.
  */
 public class WaitUtils {
 
     /**
-     * Явно ожидает, пока элемент не станет видимым (displayed) на странице.
+     * Ожидает появления и видимости элемента на странице.
      *
-     * @param driver  экземпляр WebDriver
-     * @param locator локатор искомого элемента
-     * @param seconds максимальное время ожидания (в секундах)
+     * @param driver  Экземпляр WebDriver для взаимодействия с браузером
+     * @param locator Локатор элемента (By) который нужно ожидать
+     * @param seconds Максимальное время ожидания в секундах
+     * @throws org.openqa.selenium.TimeoutException Если элемент не стал видимым за указанное время
      */
     public static void waitUntilVisible(WebDriver driver, By locator, int seconds) {
+        // Создаем экземпляр WebDriverWait с указанным временем ожидания
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        // Ожидаем пока элемент не станет видимым на странице
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     /**
-     * Явно ожидает, пока элемент не станет кликабельным.
+     * Ожидает пока элемент станет кликабельным (видимым и enabled).
      *
-     * @param driver  экземпляр WebDriver
-     * @param locator локатор искомого элемента
-     * @param seconds максимальное время ожидания (в секундах)
+     * @param driver  Экземпляр WebDriver для взаимодействия с браузером
+     * @param locator Локатор элемента (By) который нужно ожидать
+     * @param seconds Максимальное время ожидания в секундах
+     * @throws org.openqa.selenium.TimeoutException Если элемент не стал кликабельным за указанное время
      */
     public static void waitUntilClickable(WebDriver driver, By locator, int seconds) {
+        // Создаем экземпляр WebDriverWait с указанным временем ожидания
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        // Ожидаем пока элемент не станет кликабельным
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 }

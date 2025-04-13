@@ -2,63 +2,66 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+    <!-- Базовые настройки проекта -->
+    <modelVersion>4.0.0</modelVersion> <!-- Версия POM модели -->
+    <groupId>com.reportportal.tests</groupId> <!-- Идентификатор организации -->
+    <artifactId>reportportal-tests</artifactId> <!-- Идентификатор проекта -->
+    <version>1.0-SNAPSHOT</version> <!-- Версия проекта (SNAPSHOT означает разработку) -->
 
-    <groupId>com.reportportal.tests</groupId>
-    <artifactId>reportportal-tests</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <!-- Зависимости проекта -->
     <dependencies>
-        <!-- Selenium -->
+        <!-- Selenium WebDriver - для автоматизации браузера -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.31.0</version>
+            <version>4.31.0</version> <!-- Версия Selenium -->
         </dependency>
 
-        <!-- RestAssured -->
+        <!-- RestAssured - для тестирования REST API -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Только для тестов -->
         </dependency>
 
-        <!-- JUnit 5 -->
+        <!-- JUnit 5 - фреймворк для unit-тестирования -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.0</version>
+            <version>5.10.0</version> <!-- Версия JUnit 5 -->
         </dependency>
 
-        <!-- Allure -->
+        <!-- Allure Integration - для красивых отчетов -->
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
             <version>2.27.0</version>
-            <scope>test</scope>
+            <scope>test</scope> <!-- Только для тестов -->
         </dependency>
 
-        <!-- SLF4J Logger -->
+        <!-- SLF4J - интерфейс для логирования -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>2.0.0</version>
         </dependency>
 
-        <!-- Logback (реализация для SLF4J) -->
+        <!-- Logback - реализация логирования для SLF4J -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>1.4.6</version>
         </dependency>
 
+        <!-- WebDriverManager - автоматическое управление драйверами браузеров -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>5.8.0</version>
         </dependency>
 
+        <!-- Selenium DevTools - для работы с Chrome DevTools Protocol -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-devtools-v132</artifactId>
@@ -66,23 +69,24 @@
         </dependency>
     </dependencies>
 
+    <!-- Настройки сборки -->
     <build>
         <plugins>
-            <!-- Allure Plugin -->
+            <!-- Allure Plugin - для генерации отчетов Allure -->
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>2.11.2</version>
             </plugin>
 
-            <!-- Compiler Plugin -->
+            <!-- Компилятор Java -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>17</source> <!-- Версия исходного кода Java -->
+                    <target>17</target> <!-- Целевая версия JVM -->
                 </configuration>
             </plugin>
         </plugins>

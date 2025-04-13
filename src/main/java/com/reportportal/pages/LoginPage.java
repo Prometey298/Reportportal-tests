@@ -5,77 +5,78 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 /**
- * Класс-страница для авторизации в Report Portal.
- * Реализован по паттерну Page Object.
- *
- * Содержит методы для открытия страницы логина, ввода логина и пароля,
- * а также нажатия на кнопку входа.
+ * Page Object класс для страницы авторизации Report Portal.
+ * Инкапсулирует взаимодействие с элементами страницы логина.
  */
 public class LoginPage {
 
-    // Экземпляр WebDriver, через который будет производиться взаимодействие с браузером
+    // Драйвер для взаимодействия с браузером
     private final WebDriver driver;
 
-    // Локаторы для элементов на странице входа
-    private final By usernameField = By.name("login");
-    private final By passwordField = By.name("password");
-    private final By loginButton   = By.cssSelector("button[type='submit']");
+    // Локаторы элементов страницы
+    private final By usernameField = By.name("login"); // Поле ввода логина
+    private final By passwordField = By.name("password"); // Поле ввода пароля
+    private final By loginButton = By.cssSelector("button[type='submit']"); // Кнопка входа
 
     /**
-     * Конструктор страницы логина.
+     * Конструктор класса LoginPage.
      *
-     * @param driver WebDriver, передаваемый из теста
+     * @param driver экземпляр WebDriver, который будет использоваться для взаимодействия со страницей
      */
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
 
     /**
-     * Открывает стартовую страницу Report Portal.
+     * Открывает страницу авторизации по указанному URL.
+     *
+     * @param url адрес страницы логина
      */
     public void open(String url) {
-        driver.get(url);
+        driver.get(url); // Переход по указанному URL
     }
 
     /**
-     * Вводит имя пользователя в поле логина.
+     * Вводит указанное имя пользователя в поле логина.
+     * Перед вводом очищает поле и устанавливает фокус.
      *
-     * @param username логин (например, "default")
+     * @param username имя пользователя для ввода
      */
     public void enterUsername(String username) {
         WebElement userInput = driver.findElement(usernameField);
-        userInput.click(); // Явный фокус
-        userInput.clear();               // очищаем поле перед вводом
-        userInput.sendKeys(username);   // вводим логин
+        userInput.click(); // Установка фокуса на поле
+        userInput.clear(); // Очистка поля
+        userInput.sendKeys(username); // Ввод логина
     }
 
     /**
-     * Вводит пароль в поле пароля.
+     * Вводит указанный пароль в соответствующее поле.
+     * Перед вводом очищает поле.
      *
-     * @param password пароль (например, "1q2w3e")
+     * @param password пароль для ввода
      */
     public void enterPassword(String password) {
         WebElement passInput = driver.findElement(passwordField);
-        passInput.clear();               // очищаем поле перед вводом
-        passInput.sendKeys(password);   // вводим пароль
+        passInput.clear(); // Очистка поля
+        passInput.sendKeys(password); // Ввод пароля
     }
 
     /**
-     * Кликает на кнопку входа в систему.
+     * Нажимает кнопку входа в систему.
      */
     public void clickLogin() {
-        driver.findElement(loginButton).click();
+        driver.findElement(loginButton).click(); // Клик по кнопке входа
     }
 
     /**
-     * Выполняет полный цикл авторизации: ввод логина, пароля и нажатие кнопки "Войти".
+     * Выполняет полный процесс авторизации.
      *
-     * @param username логин
+     * @param username имя пользователя
      * @param password пароль
      */
     public void loginAs(String username, String password) {
-        enterUsername(username);
-        enterPassword(password);
-        clickLogin();
+        enterUsername(username); // Ввод логина
+        enterPassword(password); // Ввод пароля
+        clickLogin(); // Нажатие кнопки входа
     }
 }

@@ -14,56 +14,55 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 /**
- * Негативный API тест, проверяющий, что дашборд не может быть создан без обязательного поля "name".
- *
- * Тест выполняет:
- * - POST запрос с некорректным телом (без "name");
- * - проверку, что API возвращает статус 400 и ожидаемое сообщение об ошибке;
- * - GET-запрос, подтверждающий, что дашборд не был создан.
- *
- * Используется:
- * - RestAssured для HTTP-запросов;
- * - Allure для отчётности;
- * - JUnit 5 для структуры тестов.
+ * Негативный API тест, проверяющий обработку ошибок при создании дашбордов.
+ * Наследует базовую конфигурацию из BaseAPITest.
  */
-@Epic("Report Portal API Tests")
-@Feature("Dashboard Management")
+@Epic("Report Portal API Tests")        // Аннотация Allure для группировки тестов в отчете
+@Feature("Dashboard Management")        // Аннотация Allure для обозначения тестируемой функциональности
 public class NegativeDashboardAPITest extends BaseAPITest {
+
     /**
-     * Негативный тест: попытка создать дашборд без поля "name".
-     * Ожидаем статус 400 и сообщение об ошибке.
+     * Тест проверяет корректность обработки ошибки при попытке создать дашборд
+     * без обязательного параметра "name".
+     *
+     * Тест выполняет следующие проверки:
+     * 1. Отправляет POST-запрос с невалидным телом (без поля "name")
+     * 2. Проверяет, что API возвращает:
+     *    - HTTP статус 400 (Bad Request)
+     *    - Сообщение об ошибке с указанием на отсутствие обязательного поля
+     * 3. Дополнительно проверяет через GET-запрос, что дашборд не был создан
      */
     @Test
-    @Story("Create Dashboard with Invalid Data")
-    @DisplayName("Create dashboard without required 'name' parameter")
+    @Story("Create Dashboard with Invalid Data")       // Аннотация Allure для User Story
+    @DisplayName("Create dashboard without required 'name' parameter") // Читаемое название теста
     void testCreateDashboardWithoutName() {
-        // JSON тело без поля "name"
+        // Тело запроса без обязательного поля "name"
         String invalidRequestBody = """
         {
             "description": "Negative Test Dashboard"
         }
         """;
 
-        // === Шаг 1: Отправка POST-запроса ===
+        // === ШАГ 1: ОТПРАВКА НЕВАЛИДНОГО ЗАПРОСА ===
         getAuthenticatedRequest()
-                .body(invalidRequestBody)
+                .body(invalidRequestBody)              // Установка невалидного тела запроса
                 .when()
-                .post("/{projectName}/dashboard")
+                .post("/{projectName}/dashboard")      // Отправка POST-запроса
                 .then()
-                .log().status()  // лог статуса
-                .log().body()    // лог тела ответа
-                .statusCode(400) // ожидаем ошибку 400 Bad Request
-                .body("message", containsString("Field 'name' should not be null")); // проверка сообщения
+                .log().status()                        // Логирование статуса ответа
+                .log().body()                         // Логирование тела ответа
+                .statusCode(400)                       // Проверка кода ответа (400 Bad Request)
+                .body("message", containsString("Field 'name' should not be null")); // Проверка сообщения об ошибке
 
-        // === Шаг 2: Убедимся, что дашборд не создался ===
+        // === ШАГ 2: ПРОВЕРКА ОТСУТСТВИЯ ДАШБОРДА В СПИСКЕ ===
         given()
-                .auth().oauth2(API_TOKEN)
-                .pathParam("projectName", PROJECT_NAME)
+                .auth().oauth2(API_TOKEN)            // Установка авторизации
+                .pathParam("projectName", PROJECT_NAME) // Подстановка имени проекта
                 .when()
-                .get("/{projectName}/dashboard")
+                .get("/{projectName}/dashboard")      // Отправка GET-запроса
                 .then()
-                .log().status()
-                .statusCode(200)
-                .body("content.description", not(hasItem("Negative Test Dashboard"))); // убеждаемся, что нет такого описания
+                .log().status()                       // Логирование статуса
+                .statusCode(200)                      // Проверка кода ответа (200 OK)
+                .body("content.description", not(hasItem("Negative Test Dashboard"))); // Проверка отсутствия записи
     }
 }

@@ -6,10 +6,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
 
+/**
+ * Page Object класс для работы с дашбордами в Report Portal.
+ * Содержит методы для взаимодействия с элементами страницы дашбордов.
+ */
 public class DashboardPage {
     private final WebDriver driver;
 
-    // Локаторы для элементов страницы
+    // Локаторы элементов страницы дашбордов
     private final By firstDashboardLink = By.xpath("//a[contains(@class,'dashboardTable__name')]");
     private final By addWidgetBtn = By.xpath("//span[contains(text(),'Add new widget')]");
     private final By widgetTypeSelector = By.xpath("//div[contains(text(),'Launch statistics chart')]");
@@ -18,12 +22,18 @@ public class DashboardPage {
     private final By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
     private final By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
 
+    /**
+     * Конструктор класса DashboardPage.
+     *
+     * @param driver экземпляр WebDriver для взаимодействия со страницей
+     */
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
     }
 
     /**
-     * Открывает раздел "Dashboards" через боковое меню.
+     * Открывает раздел дашбордов через боковое меню.
+     * Ожидает кликабельности элемента меню перед взаимодействием.
      */
     public void openDashboardsMenu() {
         By dashboardMenuLocator = By.cssSelector("a[href*='dashboard']");
@@ -33,7 +43,8 @@ public class DashboardPage {
     }
 
     /**
-     * Открывает первый дашборд из списка
+     * Открывает первый дашборд из списка.
+     * Ожидает кликабельности ссылки перед открытием.
      */
     public void openFirstDashboard() {
         WaitUtils.waitUntilClickable(driver, firstDashboardLink, 15);
@@ -41,7 +52,8 @@ public class DashboardPage {
     }
 
     /**
-     * Нажимает кнопку добавления нового виджета
+     * Нажимает кнопку добавления нового виджета.
+     * Ожидает кликабельности кнопки перед взаимодействием.
      */
     public void clickAddNewWidget() {
         WaitUtils.waitUntilClickable(driver, addWidgetBtn, 15);
@@ -49,7 +61,8 @@ public class DashboardPage {
     }
 
     /**
-     * Выбирает тип виджета "Launch statistics chart"
+     * Выбирает тип виджета "Launch statistics chart".
+     * Ожидает кликабельности элемента перед выбором.
      */
     public void selectWidgetType() {
         WaitUtils.waitUntilClickable(driver, widgetTypeSelector, 15);
@@ -57,31 +70,32 @@ public class DashboardPage {
     }
 
     /**
-     * Нажимает кнопку "Next Step"
+     * Нажимает кнопку "Next Step" с дополнительными проверками.
+     * Выполняет прокрутку к элементу и клик через JavaScript при необходимости.
      */
     public void clickNextStep() {
-        // Первоначальное ожидание, чтобы кнопка была кликабельна
         WaitUtils.waitUntilClickable(driver, nextStepBtn, 15);
         WebElement nextStep = driver.findElement(nextStepBtn);
 
-        // Прокручиваем элемент в область видимости
+        // Прокрутка к элементу
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", nextStep);
 
-        // Явное ожидание — ждём, пока кнопка снова станет кликабельной после прокрутки
+        // Дополнительное ожидание после прокрутки
         WaitUtils.waitUntilClickable(driver, nextStepBtn, 15);
 
-        // Выполняем клик через JavaScript
+        // Клик через JavaScript для избежания проблем с перекрытием элементов
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", nextStep);
     }
 
     /**
-     * Выбирает фильтр "Task Progress"
+     * Выбирает фильтр "Task Progress".
+     * После выбора фильтра прокручивает страницу к кнопке Next Step.
      */
     public void selectTaskProgressFilter() {
         WaitUtils.waitUntilClickable(driver, taskProgressFilter, 15);
         driver.findElement(taskProgressFilter).click();
 
-        // Прокручиваем к кнопке Next Step (даже если она еще не видна)
+        // Плавная прокрутка к кнопке Next Step
         WebElement nextStep = driver.findElement(nextStepBtn);
         ((JavascriptExecutor) driver).executeScript(
                 "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
@@ -90,9 +104,9 @@ public class DashboardPage {
     }
 
     /**
-     * Извлекает сгенерированное название виджета из поля "Widget name".
+     * Получает автоматически сгенерированное название виджета.
      *
-     * @return значение атрибута value в <input>
+     * @return значение поля ввода названия виджета
      */
     public String getWidgetName() {
         WaitUtils.waitUntilVisible(driver, widgetNameInput, 15);
@@ -101,7 +115,8 @@ public class DashboardPage {
     }
 
     /**
-     * Завершает добавление виджета
+     * Завершает процесс добавления виджета.
+     * Ожидает кликабельности кнопки добавления перед взаимодействием.
      */
     public void completeWidgetAdding() {
         WaitUtils.waitUntilClickable(driver, addWidgetFinalBtn, 15);
@@ -109,10 +124,10 @@ public class DashboardPage {
     }
 
     /**
-     * Проверяет наличие виджета с конкретным названием на странице
+     * Проверяет наличие виджета с указанным именем на странице.
      *
-     * @param widgetName имя виджета, которое должно быть на странице
-     * @return true, если виджет с таким именем найден
+     * @param widgetName имя виджета для поиска
+     * @return true если виджет отображается, false в противном случае
      */
     public boolean isWidgetPresent(String widgetName) {
         By widgetByName = By.xpath("//div[contains(text(),'" + widgetName + "')]");

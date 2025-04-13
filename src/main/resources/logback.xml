@@ -1,11 +1,28 @@
 <configuration>
-    <!-- Конфигурация корневого логгера -->
+    <!--
+    Конфигурация системы логирования Logback.
+    Определяет форматы вывода и способы обработки логов.
+    -->
+
+    <!-- Конфигурация аппендера для вывода в консоль -->
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--
+        Настройка формата вывода логов:
+        - %d{yyyy-MM-dd HH:mm:ss} - дата и время
+        - %level - уровень логирования (DEBUG, INFO, ERROR и т.д.)
+        - %msg - текст сообщения
+        - %n - перенос строки
+        -->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss} - %level - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!--
+    Настройка корневого логгера:
+    - level="debug" - минимальный уровень логирования (DEBUG и выше)
+    - appender-ref ref="Console" - вывод будет осуществляться в консоль
+    -->
     <root level="debug">
         <appender-ref ref="Console" />
     </root>
