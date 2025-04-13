@@ -9,7 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 
-public class BaseTest {
+public class BaseUITest {
     protected WebDriver driver;
 
     @BeforeEach
@@ -31,7 +31,12 @@ public class BaseTest {
     @AfterEach
     public void tearDown() {
         if (driver != null) {
-            driver.quit();
+            try {
+                driver.quit();
+            } catch (Exception e) {
+                System.err.println("Error during driver quit: " + e.getMessage());
+            }
         }
+
     }
 }

@@ -24,26 +24,7 @@ import static org.hamcrest.Matchers.*;
  */
 @Epic("Report Portal API Tests")        // Глобальный раздел в Allure
 @Feature("Dashboard Management")        // Фича — управление дашбордами
-public class DashboardAPITest {
-
-    // Базовый URL API
-    private static final String BASE_URL = ConfigLoader.getProperty("api.base.url");
-
-
-    // 🔑 API токен, полученный из профиля проекта (должен быть актуальным!)
-    private static final String API_TOKEN = ConfigLoader.getProperty("api.token");
-
-    // Имя проекта, в котором создаётся Dashboard
-    private static final String PROJECT_NAME = ConfigLoader.getProperty("project.name");
-
-    /**
-     * Устанавливает базовый URL до выполнения всех тестов.
-     */
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = BASE_URL;
-    }
-
+public class DashboardAPITest extends BaseAPITest {
     /**
      * Тест проверяет возможность создать дашборд через API,
      * а затем убедиться, что он присутствует в списке дашбордов.
@@ -64,11 +45,7 @@ public class DashboardAPITest {
         """, dashboardName);
 
         // === Шаг 1: Создание Dashboard через POST ===
-        Response response = given()
-                .auth().oauth2(API_TOKEN)                          // Авторизация через Bearer токен
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .pathParam("projectName", PROJECT_NAME)
+        Response response = getAuthenticatedRequest()
                 .body(requestBody)
                 .when()
                 .post("/{projectName}/dashboard")                 // Endpoint: /v1/{projectName}/dashboard

@@ -28,24 +28,7 @@ import static org.hamcrest.Matchers.*;
  */
 @Epic("Report Portal API Tests")
 @Feature("Dashboard Management")
-public class NegativeDashboardAPITest {
-
-    // Базовый URL API
-    private static final String BASE_URL = ConfigLoader.getProperty("api.base.url");
-
-    // 🔑 API токен, полученный из профиля проекта (должен быть актуальным!)
-    private static final String API_TOKEN = ConfigLoader.getProperty("api.token");
-
-    private static final String PROJECT_NAME = ConfigLoader.getProperty("project.name");
-
-    /**
-     * Установка базового URL до всех тестов.
-     */
-    @BeforeAll
-    public static void setup() {
-        RestAssured.baseURI = BASE_URL;
-    }
-
+public class NegativeDashboardAPITest extends BaseAPITest {
     /**
      * Негативный тест: попытка создать дашборд без поля "name".
      * Ожидаем статус 400 и сообщение об ошибке.
@@ -62,11 +45,7 @@ public class NegativeDashboardAPITest {
         """;
 
         // === Шаг 1: Отправка POST-запроса ===
-        given()
-                .auth().oauth2(API_TOKEN)
-                .contentType(ContentType.JSON)
-                .accept(ContentType.JSON)
-                .pathParam("projectName", PROJECT_NAME)
+        getAuthenticatedRequest()
                 .body(invalidRequestBody)
                 .when()
                 .post("/{projectName}/dashboard")

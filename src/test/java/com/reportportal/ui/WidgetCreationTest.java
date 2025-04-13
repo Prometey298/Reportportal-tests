@@ -3,6 +3,9 @@ package com.reportportal.ui;
 import com.reportportal.pages.DashboardPage;
 import com.reportportal.pages.LoginPage;
 import com.reportportal.utils.ConfigLoader;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -12,7 +15,10 @@ import org.openqa.selenium.TakesScreenshot;
 import java.io.File;
 import java.io.IOException;
 
-public class WidgetCreationTest extends BaseTest {
+@Epic("UI Tests")
+@Feature("Widget Management")
+@Story("Create new widget")
+public class WidgetCreationTest extends BaseUITest {
 
     @Test
     public void testAddWidgetToDashboard() throws IOException {

@@ -19,6 +19,10 @@ public class ConfigLoader {
     }
 
     public static String getProperty(String key) {
-        return properties.getProperty(key);
+        String value = properties.getProperty(key);
+        if (value == null) {
+            throw new RuntimeException("Property " + key + " not found in config");
+        }
+        return value;
     }
 }
