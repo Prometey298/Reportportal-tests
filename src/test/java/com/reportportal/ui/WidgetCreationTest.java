@@ -1,68 +1,85 @@
 package com.reportportal.ui;
 
-import com.reportportal.tests.DashboardPage;
-import com.reportportal.tests.LoginPage;
-import com.reportportal.tests.utils.ConfigLoader;
+import com.reportportal.pages.DashboardPage;
+import com.reportportal.pages.LoginPage;
+import com.reportportal.utils.ConfigLoader;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-public class WidgetCreationTest {
+/**
+ * Тестовый класс для проверки создания виджета в ReportPortal.
+ * Наследует базовый функционал из BaseUITest.
+ */
+@Epic("UI Tests")        // Аннотация Allure для группировки в отчетах
+@Feature("Widget Management")  // Аннотация Allure для функциональной группировки
+@Story("Create new widget")    // Аннотация Allure для пользовательской истории
+public class WidgetCreationTest extends BaseUITest {
 
+    /**
+     * Тест добавления нового виджета на дашборд.
+     * @throws IOException при проблемах с сохранением скриншота
+     */
     @Test
     public void testAddWidgetToDashboard() throws IOException {
-        // Загружаем настройки
+        // Загрузка учетных данных из конфигурации
         String username = ConfigLoader.getProperty("default.username");
         String password = ConfigLoader.getProperty("default.password");
-
-        ChromeOptions options = new ChromeOptions();
-        Map<String, Object> prefs = new HashMap<>();
-        prefs.put("credentials_enable_service", false);
-        prefs.put("profile.password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        options.addArguments("--incognito");
-
-        WebDriver driver = new ChromeDriver(options);
+        String reportPortalUrl = ConfigLoader.getProperty("reportportal.url");
 
         try {
-            // 1. Авторизация
+            // === 1. АВТОРИЗАЦИЯ ===
             LoginPage loginPage = new LoginPage(driver);
-            loginPage.open(ConfigLoader.getProperty("reportportal.url"));
+            // Открываем страницу логина
+            loginPage.open(reportPortalUrl);
+            // Выполняем вход с полученными учетными данными
             loginPage.loginAs(username, password);
 
-            // 2. Открытие первого дашборда
+            // === 2. ОТКРЫТИЕ ДАШБОРДА ===
             DashboardPage dashboardPage = new DashboardPage(driver);
+            // Открываем меню дашбордов
             dashboardPage.openDashboardsMenu();
+            // Открываем первый доступный дашборд
             dashboardPage.openFirstDashboard();
 
-            // 3. Добавление нового виджета
+            // === 3. СОЗДАНИЕ ВИДЖЕТА ===
+            // Нажимаем кнопку добавления нового виджета
             dashboardPage.clickAddNewWidget();
+            // Выбираем тип виджета (по умолчанию или из конфига)
             dashboardPage.selectWidgetType();
+            // Переходим к следующему шагу
             dashboardPage.clickNextStep();
+            // Выбираем фильтр для виджета
             dashboardPage.selectTaskProgressFilter();
+            // Подтверждаем выбор
             dashboardPage.clickNextStep();
+            // Получаем сгенерированное имя виджета
             String widgetName = dashboardPage.getWidgetName();
+            // Завершаем процесс добавления
             dashboardPage.completeWidgetAdding();
 
-            // 4. Проверка наличия виджета
+            // === 4. ПРОВЕРКА РЕЗУЛЬТАТА ===
+            // Проверяем, что виджет появился на дашборде
             boolean isWidgetAdded = dashboardPage.isWidgetPresent(widgetName);
-            Assertions.assertTrue(isWidgetAdded, "Виджет не был добавлен");
+            // Утверждение, которое упадет, если виджет не добавлен
+            Assertions.assertTrue(isWidgetAdded, "Widget was not added");
+
         } catch (Exception e) {
+            // === ОБРАБОТКА ОШИБОК ===
+            // Делаем скриншот при возникновении исключения
             File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+            // Сохраняем скриншот в папку target/screenshots
             FileUtils.copyFile(screenshot, new File("target/screenshots/error.png"));
+            // Пробрасываем исключение дальше (тест будет отмечен как failed)
             throw e;
-        } finally {
-            driver.quit();
         }
     }
 }
