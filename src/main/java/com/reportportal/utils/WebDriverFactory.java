@@ -7,10 +7,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Фабрика для создания экземпляров WebDriver с различными настройками.
- * Поддерживает создание драйверов для Chrome и Yandex Browser.
- */
 public class WebDriverFactory {
 
     /**

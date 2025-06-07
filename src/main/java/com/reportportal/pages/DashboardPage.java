@@ -6,10 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.JavascriptExecutor;
 
-/**
- * Page Object класс для работы с дашбордами в Report Portal.
- * Содержит методы для взаимодействия с элементами страницы дашбордов.
- */
 public class DashboardPage {
     private final WebDriver driver;
 
@@ -22,18 +18,13 @@ public class DashboardPage {
     private final By widgetNameInput = By.cssSelector("input[placeholder='Enter widget name']");
     private final By addWidgetFinalBtn = By.xpath("//button[contains(text(),'Add')]");
 
-    /**
-     * Конструктор класса DashboardPage.
-     *
-     * @param driver экземпляр WebDriver для взаимодействия со страницей
-     */
+
     public DashboardPage(WebDriver driver) {
         this.driver = driver;
     }
 
     /**
      * Открывает раздел дашбордов через боковое меню.
-     * Ожидает кликабельности элемента меню перед взаимодействием.
      */
     public void openDashboardsMenu() {
         By dashboardMenuLocator = By.cssSelector("a[href*='dashboard']");
@@ -44,7 +35,6 @@ public class DashboardPage {
 
     /**
      * Открывает первый дашборд из списка.
-     * Ожидает кликабельности ссылки перед открытием.
      */
     public void openFirstDashboard() {
         WaitUtils.waitUntilClickable(driver, firstDashboardLink, 15);
@@ -53,7 +43,6 @@ public class DashboardPage {
 
     /**
      * Нажимает кнопку добавления нового виджета.
-     * Ожидает кликабельности кнопки перед взаимодействием.
      */
     public void clickAddNewWidget() {
         WaitUtils.waitUntilClickable(driver, addWidgetBtn, 15);
@@ -62,7 +51,6 @@ public class DashboardPage {
 
     /**
      * Выбирает тип виджета "Launch statistics chart".
-     * Ожидает кликабельности элемента перед выбором.
      */
     public void selectWidgetType() {
         WaitUtils.waitUntilClickable(driver, widgetTypeSelector, 15);

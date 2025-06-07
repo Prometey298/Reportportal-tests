@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 
 /**
  * Page Object класс для страницы авторизации Report Portal.
- * Инкапсулирует взаимодействие с элементами страницы логина.
  */
 public class LoginPage {
 
@@ -18,11 +17,6 @@ public class LoginPage {
     private final By passwordField = By.name("password"); // Поле ввода пароля
     private final By loginButton = By.cssSelector("button[type='submit']"); // Кнопка входа
 
-    /**
-     * Конструктор класса LoginPage.
-     *
-     * @param driver экземпляр WebDriver, который будет использоваться для взаимодействия со страницей
-     */
     public LoginPage(WebDriver driver) {
         this.driver = driver;
     }
@@ -38,8 +32,6 @@ public class LoginPage {
 
     /**
      * Вводит указанное имя пользователя в поле логина.
-     * Перед вводом очищает поле и устанавливает фокус.
-     *
      * @param username имя пользователя для ввода
      */
     public void enterUsername(String username) {
@@ -51,8 +43,6 @@ public class LoginPage {
 
     /**
      * Вводит указанный пароль в соответствующее поле.
-     * Перед вводом очищает поле.
-     *
      * @param password пароль для ввода
      */
     public void enterPassword(String password) {

@@ -7,10 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
-/**
- * Утилитный класс для работы с ожиданиями в Selenium WebDriver.
- * Предоставляет статические методы-обертки над WebDriverWait для стандартных сценариев ожидания.
- */
+
 public class WaitUtils {
 
     /**

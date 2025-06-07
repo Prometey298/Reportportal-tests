@@ -4,10 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Утилитарный класс для загрузки конфигурационных параметров из файла config.properties.
- * Обеспечивает централизованное управление настройками приложения.
- */
+
 public class ConfigLoader {
     // Статический объект Properties для хранения загруженных параметров
     private static final Properties properties = new Properties();
